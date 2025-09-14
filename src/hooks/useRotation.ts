@@ -24,6 +24,8 @@ export const useRotation = <T extends HTMLElement>(
 
     const degreesPerFrame = (speed * rotationDirection) / 60;
     currentRotationRef.current += degreesPerFrame;
+    
+    currentRotationRef.current = currentRotationRef.current % 360;
 
     if (elementRef.current) {
       elementRef.current.style.transform = `rotate(${currentRotationRef.current}deg)`;

@@ -1,9 +1,9 @@
-import "./App.css";
 import ReactIconRotation from "./components/ReactIconRotation";
 
+import "./App.css";
+
+
 function App() {
-
-
 	return (
 		<ReactIconRotation />		
 	);

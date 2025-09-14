@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useRotation } from "../../hooks/useRotation";
 import reactIcon from "../../assets/react.svg";
 import { INITIAL_DIRECTION, SPEED } from "../../constants/react-icon-rotation";
+import "./ReactIconRotation.css";
 
 const ReactIconRotation = () => {
 	const imgRef = useRef<HTMLImageElement>(null);
@@ -12,7 +13,7 @@ const ReactIconRotation = () => {
 	});
 
 	return (
-		<main className="app">
+		<main className="react-icon-rotation">
 			<img
 				ref={elementRef}
 				src={reactIcon}
