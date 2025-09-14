@@ -4,13 +4,14 @@ import type {
   UseRotationOptions, 
   UseRotationReturn 
 } from '../types/rotation';
+import { DEFAULT_SPEED, DEFAULT_INITIAL_DIRECTION, FRAME_RATE, MAX_DEGREES } from '../constants/react-icon-rotation';
 
 export const useRotation = <T extends HTMLElement>(
   options: UseRotationOptions<T>
 ): UseRotationReturn<T> => {
   const {
-    speed = 120,
-    initialDirection = 1,
+    speed = DEFAULT_SPEED,
+    initialDirection = DEFAULT_INITIAL_DIRECTION,
     elementRef
   } = options;
 
@@ -22,10 +23,10 @@ export const useRotation = <T extends HTMLElement>(
   const animate = useCallback(() => {
     if (!isAnimating) return;
 
-    const degreesPerFrame = (speed * rotationDirection) / 60;
+    const degreesPerFrame = (speed * rotationDirection) / FRAME_RATE;
     currentRotationRef.current += degreesPerFrame;
     
-    currentRotationRef.current = currentRotationRef.current % 360;
+    currentRotationRef.current = currentRotationRef.current % MAX_DEGREES;
 
     if (elementRef.current) {
       elementRef.current.style.transform = `rotate(${currentRotationRef.current}deg)`;
