@@ -1,12 +1,13 @@
 import { useRef } from "react";
 import { useRotation } from "../../hooks/useRotation";
 import reactIcon from "../../assets/react.svg";
+import { INITIAL_DIRECTION, SPEED } from "../../constants/react-icon-rotation";
 
 const ReactIconRotation = () => {
 	const imgRef = useRef<HTMLImageElement>(null);
 	const { elementRef, toggleDirection } = useRotation({
-		speed: 60,
-		initialDirection: 1,
+		speed: SPEED,
+		initialDirection: INITIAL_DIRECTION,
 		elementRef: imgRef,
 	});
 
