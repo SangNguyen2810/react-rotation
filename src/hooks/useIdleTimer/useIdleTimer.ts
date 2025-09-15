@@ -9,7 +9,6 @@ export interface UseIdleTimerOptions {
 export interface UseIdleTimerReturn {
 	idleTime: number;
 	formattedIdleTime: string;
-	isIdle: boolean;
 }
 
 export const useIdleTimer = (
@@ -19,8 +18,6 @@ export const useIdleTimer = (
 
 	const [idleTime, setIdleTime] = useState(0);
 	
-	const isIdle = idleTime > 0;
-
 	const idleStartTimeRef = useRef<number | null>(null);
 	const lastMousePositionRef = useRef<{ x: number; y: number } | null>(null);
 	const updateIntervalRef = useRef<number | null>(null);
@@ -151,6 +148,5 @@ export const useIdleTimer = (
 	return {
 		idleTime,
 		formattedIdleTime: formatTime(idleTime, format),
-		isIdle,
 	};
 };
