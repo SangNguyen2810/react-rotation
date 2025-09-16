@@ -42,7 +42,6 @@ We chose `requestAnimationFrame` over pure CSS animations for several critical r
 | **Direction Control** | Instant, smooth direction changes | No animation restart when changing direction | Click to reverse rotation seamlessly |
 | **Precision** | Frame-rate independent | Adapts to any display refresh rate | Works on 60Hz, 144Hz, 240Hz displays |
 | **Control** | Full programmatic control | Start, stop, pause, resume, speed changes | `startAnimation()`, `stopAnimation()`, `setSpeed()` |
-| **Smoothness** | No animation restarts | Continuous rotation without interruption | Smooth direction changes |
 | **Timing** | Browser-optimized | Syncs with display refresh rate | Automatically pauses when tab is hidden |
 | **Debugging** | Easy to debug | Full control over animation state | Can log rotation values, pause for inspection |
 
@@ -52,7 +51,6 @@ We chose `requestAnimationFrame` over pure CSS animations for several critical r
 |-------|---------|--------|------------|
 | **Complexity** | More code required | Higher initial setup | Use our pre-built hook |
 | **JavaScript Dependency** | Requires JS to be enabled | Won't work if JS is disabled | Graceful degradation needed |
-| **Bundle Size** | Adds to JS bundle |
 | **CPU Usage** | Continuous JS execution | Higher CPU usage than CSS | Optimized with `requestAnimationFrame` |
 
 ## 🎨 **Pure CSS Animations**
@@ -64,7 +62,6 @@ We chose `requestAnimationFrame` over pure CSS animations for several critical r
 | **Performance** | Hardware accelerated | GPU-optimized rendering | `transform: rotate()` uses GPU |
 | **Simplicity** | Easy to implement | Just CSS, no JavaScript | `animation: spin 3s linear infinite` |
 | **No JS Dependency** | Works without JavaScript | Functions even if JS is disabled | Graceful degradation |
-| **Bundle Size** | No JS overhead | Pure CSS solution | Zero JavaScript impact |
 | **Browser Optimization** | Browser-optimized | Native browser handling | Automatic optimization |
 
 ### ❌ **Cons**
@@ -73,27 +70,5 @@ We chose `requestAnimationFrame` over pure CSS animations for several critical r
 |-------|---------|--------|----------------|
 | **Direction Changes** | Animation restarts abruptly | Jarring user experience | User clicks → animation jumps to start |
 | **Limited Control** | Hard to control programmatically | Difficult to implement complex interactions | Can't easily pause/resume/speed up |
-| **Frame Rate** | Fixed to CSS timing | Doesn't adapt to display refresh rate | 60fps on 144Hz display looks choppy |
-| **Memory** | CSS animation objects | Higher memory overhead | ~2-5KB per animation |
-| **Debugging** | Hard to debug | Limited visibility into animation state | Can't easily inspect rotation values |
 | **State Management** | No state awareness | Can't track current rotation angle | Hard to sync with other components |
 | **Complex Interactions** | Limited interaction support | Hard to implement click-to-reverse | Requires complex CSS variable manipulation |
-
-## 🎛️ Configuration Options
-
-### Speed Values
-
-| Speed | Visual Result | Use Case |
-|-------|---------------|----------|
-| `30` | Very slow (1 rotation every 12 seconds) | Subtle loading indicator |
-| `60` | Slow (1 rotation every 6 seconds) | Background animation |
-| `120` | Medium (1 rotation every 3 seconds) | Default, good for most cases |
-| `360` | Fast (1 rotation per second) | Active loading spinner |
-| `720` | Very fast (2 rotations per second) | High-energy animations |
-
-### Direction Values
-
-| Value | Direction | Description |
-|-------|-----------|-------------|
-| `1` | Clockwise | Standard rotation direction |
-| `-1` | Counter-clockwise | Reverse rotation direction |
