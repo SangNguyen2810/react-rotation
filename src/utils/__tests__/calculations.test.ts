@@ -42,7 +42,7 @@ describe('Utility Functions', () => {
 
   describe('calculateDistance', () => {
     it('should calculate distance from origin correctly', () => {
-      expect(calculateDistance(3, 4)).toBe(5); // 3-4-5 triangle
+      expect(calculateDistance(3, 4)).toBe(5);
       expect(calculateDistance(0, 0)).toBe(0);
     });
 

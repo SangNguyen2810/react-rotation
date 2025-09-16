@@ -4,20 +4,20 @@ import {
 	DEFAULT_INITIAL_DIRECTION,
 	MIN_SCALE,
 	MAX_SCALE,
-} from "../../constants/react-icon-rotation";
+} from "@/constants/react-icon-rotation";
 import {
 	calculateMaxDistance,
 	calculateDistance,
 	calculateScale,
 	normalizeAngle,
 	calculateRotationDelta,
-} from "../../utils";
+} from "@/utils";
+import { useControlContext } from "@/contexts/ControlContext/useControlContext";
 
 export interface UseRotationScalingOptions<T> {
 	speed?: number;
 	initialDirection?: RotationDirection;
 	elementRef: React.RefObject<T | null>;
-	enableScaling?: boolean;
 	minScale?: number;
 	maxScale?: number;
 }
@@ -55,25 +55,31 @@ export const useRotationScaling = <T extends HTMLElement>(
 		speed = DEFAULT_SPEED,
 		initialDirection = DEFAULT_INITIAL_DIRECTION,
 		elementRef,
-		enableScaling: scalingEnabled = true,
-		minScale = MIN_SCALE,
-		maxScale = MAX_SCALE,
+		minScale: initialMinScale = MIN_SCALE,
+		maxScale: initialMaxScale = MAX_SCALE,
 	} = options;
 
-	const animationRef = useRef<number | null>(null);
-	const currentRotationRef = useRef(0);
+	const { rotationEnabled, scalingEnabled } = useControlContext();
+
 	const [rotationDirection, setRotationDirection] =
 		useState<RotationDirection>(initialDirection);
-
 	const [scale, setScale] = useState(1);
+
 	const lastTimeRef = useRef(performance.now());
 	const maxDistanceRef = useRef(calculateMaxDistance());
-
+	const animationRef = useRef<number | null>(null);
+	const currentRotationRef = useRef(0);
+	
 	const calculateScaleForDistance = useCallback(
 		(distance: number, maxDistance: number) => {
-			return calculateScale(distance, maxDistance, minScale, maxScale);
+			return calculateScale(
+				distance,
+				maxDistance,
+				initialMinScale,
+				initialMaxScale
+			);
 		},
-		[minScale, maxScale]
+		[initialMinScale, initialMaxScale]
 	);
 
 	const applyTransform = useCallback(() => {
@@ -81,9 +87,8 @@ export const useRotationScaling = <T extends HTMLElement>(
 
 		const element = elementRef.current;
 		const rotation = currentRotationRef.current;
-		const currentScale = scale;
 
-		element.style.transform = `rotate(${rotation}deg) scale(${currentScale})`;
+		element.style.transform = `rotate(${rotation}deg) scale(${scale})`;
 	}, [elementRef, scale]);
 
 	const animate = useCallback(() => {
@@ -91,18 +96,20 @@ export const useRotationScaling = <T extends HTMLElement>(
 		const deltaTime = now - lastTimeRef.current;
 		lastTimeRef.current = now;
 
-		const degreesThisFrame = calculateRotationDelta(
-			speed,
-			rotationDirection,
-			deltaTime
-		);
-		currentRotationRef.current += degreesThisFrame;
-		currentRotationRef.current = normalizeAngle(currentRotationRef.current);
+		if (rotationEnabled) {
+			const degreesThisFrame = calculateRotationDelta(
+				speed,
+				rotationDirection,
+				deltaTime
+			);
+			currentRotationRef.current += degreesThisFrame;
+			currentRotationRef.current = normalizeAngle(currentRotationRef.current);
+		}
 
 		applyTransform();
 
 		animationRef.current = requestAnimationFrame(animate);
-	}, [speed, rotationDirection, applyTransform]);
+	}, [speed, rotationDirection, applyTransform, rotationEnabled]);
 
 	const handleMouseMove = useCallback(
 		(event: MouseEvent) => {
@@ -123,6 +130,12 @@ export const useRotationScaling = <T extends HTMLElement>(
 	const handleResize = useCallback(() => {
 		maxDistanceRef.current = calculateMaxDistance();
 	}, []);
+
+	const toggleDirection = useCallback(() => {
+		if (rotationEnabled) {
+			setRotationDirection((prev) => -prev as RotationDirection);
+		}
+	}, [rotationEnabled]);
 
 	useEffect(() => {
 		animationRef.current = requestAnimationFrame(animate);
@@ -147,12 +160,8 @@ export const useRotationScaling = <T extends HTMLElement>(
 		};
 	}, [scalingEnabled, handleMouseMove, handleResize]);
 
-	const toggleDirection = useCallback(() => {
-		setRotationDirection((prev) => -prev as RotationDirection);
-	}, []);
-
 	return {
 		elementRef,
-		toggleDirection: toggleDirection,
+		toggleDirection,
 	};
 };

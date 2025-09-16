@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import { useRotationScaling } from "../../hooks/useRotationScaling";
-import { useIdleTimer } from "../../hooks/useIdleTimer";
-import reactIcon from "../../assets/react.svg";
+import { useRotationScaling } from "@/hooks/useRotationScaling";
+import { useIdleTimer } from "@/hooks/useIdleTimer";
+import reactIcon from "@/assets/react.svg";
 import {
 	INITIAL_DIRECTION,
 	SPEED,
@@ -9,7 +9,7 @@ import {
 	MAX_SCALE,
 	IDLE_TIMER_UPDATE_INTERVAL,
 	IDLE_TIMER_FORMAT,
-} from "../../constants/react-icon-rotation";
+} from "@/constants/react-icon-rotation";
 import "./ReactIconRotation.css";
 
 const ReactIconRotation = () => {
@@ -19,7 +19,6 @@ const ReactIconRotation = () => {
 		speed: SPEED,
 		initialDirection: INITIAL_DIRECTION,
 		elementRef: imgRef,
-		enableScaling: true,
 		minScale: MIN_SCALE,
 		maxScale: MAX_SCALE,
 	});
@@ -28,6 +27,7 @@ const ReactIconRotation = () => {
 		format: IDLE_TIMER_FORMAT,
 		updateInterval: IDLE_TIMER_UPDATE_INTERVAL,
 	});
+
 
 	return (
 		<main className="react-icon-rotation">
